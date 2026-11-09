@@ -364,7 +364,7 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <p class="text-sm font-semibold mb-2 text-slate-800">1. Is Benjamin from the UK?</p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="p3-q1" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                        <input type="text" id="p3-q1" oninput="resetP3Input(1)" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
                         <button onclick="checkP3Single(1)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition flex items-center justify-center gap-1 shrink-0 cursor-pointer">
                             <i class="fa-solid fa-magnifying-glass"></i> Check #1
                         </button>
@@ -376,7 +376,7 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <p class="text-sm font-semibold mb-2 text-slate-800">2. Where is Marco from?</p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="p3-q2" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                        <input type="text" id="p3-q2" oninput="resetP3Input(2)" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
                         <button onclick="checkP3Single(2)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition flex items-center justify-center gap-1 shrink-0 cursor-pointer">
                             <i class="fa-solid fa-magnifying-glass"></i> Check #2
                         </button>
@@ -388,7 +388,7 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <p class="text-sm font-semibold mb-2 text-slate-800">3. Is Mariko from Tokyo?</p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="p3-q3" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                        <input type="text" id="p3-q3" oninput="resetP3Input(3)" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
                         <button onclick="checkP3Single(3)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition flex items-center justify-center gap-1 shrink-0 cursor-pointer">
                             <i class="fa-solid fa-magnifying-glass"></i> Check #3
                         </button>
@@ -400,7 +400,7 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <p class="text-sm font-semibold mb-2 text-slate-800">4. Where is Monika from?</p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="p3-q4" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                        <input type="text" id="p3-q4" oninput="resetP3Input(4)" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
                         <button onclick="checkP3Single(4)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition flex items-center justify-center gap-1 shrink-0 cursor-pointer">
                             <i class="fa-solid fa-magnifying-glass"></i> Check #4
                         </button>
@@ -412,7 +412,7 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <p class="text-sm font-semibold mb-2 text-slate-800">5. Where is Sang from?</p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="p3-q5" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                        <input type="text" id="p3-q5" oninput="resetP3Input(5)" class="flex-grow p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
                         <button onclick="checkP3Single(5)" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition flex items-center justify-center gap-1 shrink-0 cursor-pointer">
                             <i class="fa-solid fa-magnifying-glass"></i> Check #5
                         </button>
@@ -750,10 +750,22 @@
         }
 
         // ================= PAGE 3 CHECK =================
+        function resetP3Input(qNum) {
+            const input = document.getElementById(`p3-q${qNum}`);
+            const fb = document.getElementById(`p3-fb-${qNum}`);
+            input.classList.remove('incorrect-bg');
+            if (!input.classList.contains('correct-bg')) {
+                fb.classList.add('hidden');
+            }
+        }
+
         function checkP3Single(qNum) {
             const input = document.getElementById(`p3-q${qNum}`);
             const fb = document.getElementById(`p3-fb-${qNum}`);
             const val = normalizeStr(input.value);
+            
+            // Clean up previous classes before checking afresh
+            input.classList.remove('correct-bg', 'incorrect-bg');
             fb.classList.remove('hidden');
 
             let isCorrect = false;
@@ -831,126 +843,4 @@
                 fb.innerText = "Please fix incorrect answers before proceeding.";
             }
         }
-
-        // ================= PAGE 4 CHECK =================
-        function checkPage4() {
-            const checks = [
-                {
-                    n: /^Antoni\s+Bakula$/i,
-                    j: /^a\s+manager$/i,
-                    f: /^(Lublin,?\s+Poland|Lublin\s+in\s+Poland)$/i,
-                    w: /^(a\s+language\s+school(\s+in\s+Berlin(\s+in\s+Germany)?)?|language\s+school)$/i
-                },
-                {
-                    n: /^Bily\s+Davies$/i,
-                    j: /^an?\s+English\s+teacher$/i,
-                    f: /^(Chicago,?\s+(the\s+)?US|Chicago\s+in\s+(the\s+)?US)$/i,
-                    w: /^(a\s+university(\s+in\s+Kyiv(\s+in\s+Ukraine)?)?|university)$/i
-                },
-                {
-                    n: /^Josefina\s+Flores$/i,
-                    j: /^a\s+student$/i,
-                    f: /^(Acapulco,?\s+Mexico|Acapulco\s+in\s+Mexico)$/i,
-                    w: /^(a\s+school(\s+in\s+San\s+Juan(\s+in\s+Mexico)?)?|school)$/i
-                }
-            ];
-
-            let totalCorrect = 0;
-            let totalFields = 12;
-
-            for (let i = 1; i <= 3; i++) {
-                const target = checks[i - 1];
-                const fields = ['n', 'j', 'f', 'w'];
-                
-                fields.forEach(field => {
-                    const el = document.getElementById(`p4-${field}${i}`);
-                    const val = normalizeStr(el.value);
-                    if (target[field].test(val)) {
-                        el.classList.add('correct-bg');
-                        el.classList.remove('incorrect-bg');
-                        totalCorrect++;
-                    } else {
-                        el.classList.add('incorrect-bg');
-                        el.classList.remove('correct-bg');
-                    }
-                });
-            }
-
-            const fb = document.getElementById('p4-feedback');
-            fb.classList.remove('hidden');
-            if (totalCorrect === totalFields) {
-                fb.className = "font-bold text-sm text-emerald-700";
-                fb.innerText = "Great job! Table completed accurately.";
-                unlockNextPage(4);
-            } else {
-                fb.className = "font-bold text-sm text-rose-700";
-                fb.innerText = `${totalCorrect}/${totalFields} correct. Check capital letters and jobs with "a/an"!`;
-            }
-        }
-
-        // ================= PAGE 5 CHECK =================
-        function checkPage5() {
-            const q1Val = normalizeStr(document.getElementById('p5-q1').value);
-            const q2Val = normalizeStr(document.getElementById('p5-q2').value);
-
-            const q1Regex = /^Olena\s+Kovalenko\s+is\s+a\s+student\s+from\s+Kyiv(,|\s+in)\s+Ukraine\.?$/i;
-            const q2Regex = /^Mark\s+Evans\s+is\s+a\s+teacher\s+from\s+London(,|\s+in)\s+the\s+UK\.?$/i;
-
-            let score = 0;
-
-            const input1 = document.getElementById('p5-q1');
-            if (q1Regex.test(q1Val) && q1Val[0] === 'O' && q1Val.includes('Kyiv') && q1Val.includes('Ukraine')) {
-                input1.classList.add('correct-bg');
-                input1.classList.remove('incorrect-bg');
-                score++;
-            } else {
-                input1.classList.add('incorrect-bg');
-                input1.classList.remove('correct-bg');
-            }
-
-            const input2 = document.getElementById('p5-q2');
-            if (q2Regex.test(q2Val) && q2Val[0] === 'M' && q2Val.includes('London') && q2Val.includes('UK')) {
-                input2.classList.add('correct-bg');
-                input2.classList.remove('incorrect-bg');
-                score++;
-            } else {
-                input2.classList.add('incorrect-bg');
-                input2.classList.remove('correct-bg');
-            }
-
-            const fb = document.getElementById('p5-feedback');
-            fb.classList.remove('hidden');
-            if (score === 2) {
-                fb.className = "font-bold text-sm text-emerald-700";
-                fb.innerText = "Perfect translation! You mastered capital letters and full sentences!";
-            } else {
-                fb.className = "font-bold text-sm text-rose-700";
-                fb.innerText = `${score}/2 correct. Remember capital letters, "a/an" for jobs, and cities/countries.`;
-            }
-        }
-
-        // Self-Assessment Star Rating
-        function setSelfRating(rating) {
-            const messages = [
-                "★ 1/5 — Мені ще потрібна допомога! / Needs work",
-                "★ 2/5 — Потрібно більше практики! / Getting there",
-                "★ 3/5 — Добре! / Good job",
-                "★ 4/5 — Чудово! Почуваюся впевнено! / Very good!",
-                "★ 5/5 — Засвоєно! Готовий до наступного уроку! / Mastered!"
-            ];
-
-            for (let i = 1; i <= 5; i++) {
-                const star = document.getElementById(`star-${i}`);
-                if (i <= rating) {
-                    star.className = "text-3xl text-amber-400 hover:text-amber-500 transition transform hover:scale-110 cursor-pointer";
-                } else {
-                    star.className = "text-3xl text-slate-300 hover:text-amber-400 transition transform hover:scale-110 cursor-pointer";
-                }
-            }
-
-            const msgEl = document.getElementById('rating-msg');
-            msgEl.innerText = messages[rating - 1];
-        }
-    </script>
-</body>
-</html>
+<!-- ... existing code -->
